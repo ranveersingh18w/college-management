@@ -56,12 +56,25 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 role: 'admin',
                 photoURL: 'assets/images/avatar-placeholder.svg'
             };
-            
             localStorage.setItem('userData', JSON.stringify(adminData));
             localStorage.setItem('userId', 'admin');
             localStorage.setItem('userRole', 'admin');
-            
             window.location.href = 'admin.html';
+            return;
+        } else if (rollNumber === '001' && password === '001') {
+            // Demo student login
+            const studentData = {
+                name: 'Demo Student',
+                rollNumber: '001',
+                role: 'student',
+                photoURL: 'assets/images/avatar-placeholder.svg',
+                year: '2',
+                branch: 'CSE'
+            };
+            localStorage.setItem('userData', JSON.stringify(studentData));
+            localStorage.setItem('userId', '001');
+            localStorage.setItem('userRole', 'student');
+            window.location.href = 'home.html';
             return;
         }
         
