@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Bus Booking</title>
+    <title>Bus - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,31 +35,25 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-
-    <!-- Header -->
-    <header class="gradient-bg text-white shadow-md">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <img src="assets/images/logo.svg" alt="Campus Companion" class="h-8 w-8 mr-2">
-                    <span class="text-xl font-bold">Campus Companion</span>
-                </div>
-                <nav class="flex items-center space-x-4">
-                    <a href="home.html" class="text-white hover:text-gray-200">🏠 Home</a>
-                    <a href="schedule.html" class="text-white hover:text-gray-200">📅 Schedule</a>
-                    <a href="events.html" class="text-white hover:text-gray-200">🎉 Events</a>
-                    <a href="resources.html" class="text-white hover:text-gray-200">📍 Resources</a>
-                    <a href="bus.html" class="text-white hover:text-gray-200 font-bold">🚌 Bus</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile" class="h-8 w-8 rounded-full">
-                    <span id="user-name" class="text-white">Demo Student</span>
-                    <button onclick="logout()" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">Logout</button>
-                </div>
-            </div>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion</span>
         </div>
-    </header>
+        <div class="nav-links">
+            <a href="home.html"><span>🏠</span> Home</a>
+            <a href="schedule.html"><span>📅</span> Schedule</a>
+            <a href="events.html"><span>🎉</span> Events</a>
+            <a href="resources.html"><span>📍</span> Resources</a>
+            <a href="bus.html" class="active"><span>🚌</span> Bus</a>
+        </div>
+        <div class="nav-user">
+            <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile">
+            <span id="user-name">Student</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <div id="booking-interface">
