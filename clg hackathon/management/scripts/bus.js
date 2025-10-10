@@ -1,15 +1,4 @@
-import { db } from './firebase.js';
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    query,
-    where,
-    orderBy,
-    onSnapshot
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { supabaseClient } from './supabase-client.js';
 
 // Check authentication
 const userData = JSON.parse(localStorage.getItem('userData'));
@@ -33,39 +22,21 @@ let allRoutes = [];
 let currentTime = 'morning';
 let unsubscribeBusRoutes = null;
 
-// Load bus routes with real-time updates
-function loadBusRoutes() {
-    const routesRef = collection(db, 'bus_routes');
-    const q = query(routesRef, orderBy('departureTime'));
-    
-    // Real-time listener for bus routes
-    unsubscribeBusRoutes = onSnapshot(q, (snapshot) => {
-        allRoutes = [];
-        
-        snapshot.forEach((doc) => {
-            allRoutes.push({ id: doc.id, ...doc.data() });
-        });
-        
-        displayRoutes(allRoutes);
-        
-        // Show notification on updates
-        if (snapshot.docChanges().length > 0) {
-            const changes = snapshot.docChanges();
-            const added = changes.filter(c => c.type === 'added').length;
-            const modified = changes.filter(c => c.type === 'modified').length;
-            
-            if (added > 0) {
-                showNotification(`🚌 ${added} new bus route(s) added!`, 'success');
-            } else if (modified > 0) {
-                showNotification(`🔄 ${modified} bus route(s) updated!`, 'info');
-            }
-        }
-    }, (error) => {
+// Load bus routes from Supabase
+async function loadBusRoutes() {
+    const { data, error } = await supabaseClient
+        .from('bus_routes')
+        .select('*')
+        .order('departure_time');
+
+    if (error) {
         console.error('Error loading bus routes:', error);
         showNotification('Error loading bus routes', 'error');
-        // Show sample data if no routes in database
-        loadSampleRoutes();
-    });
+        loadSampleRoutes(); // Fallback
+    } else {
+        allRoutes = data.map(r => ({ ...r, departureTime: r.departure_time, totalSeats: r.total_seats, bookedSeats: 0 }));
+        displayRoutes(allRoutes);
+    }
 }
 
 // Cleanup listener on page unload

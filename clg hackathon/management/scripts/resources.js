@@ -1,10 +1,4 @@
-import { db } from './firebase.js';
-import {
-    collection,
-    getDocs,
-    query,
-    orderBy
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { supabaseClient } from './supabase-client.js';
 
 // Check authentication
 const userData = JSON.parse(localStorage.getItem('userData'));
@@ -26,24 +20,20 @@ window.logout = function() {
 
 let allResources = [];
 
-// Load resources
+// Load resources from Supabase
 async function loadResources() {
-    try {
-        const resourcesRef = collection(db, 'campus_resources');
-        const q = query(resourcesRef, orderBy('name'));
-        
-        const querySnapshot = await getDocs(q);
-        allResources = [];
-        
-        querySnapshot.forEach((doc) => {
-            allResources.push({ id: doc.id, ...doc.data() });
-        });
-        
-        displayResources(allResources);
-    } catch (error) {
+    const { data, error } = await supabaseClient
+        .from('campus_resources')
+        .select('*')
+        .order('name');
+
+    if (error) {
         console.error('Error loading resources:', error);
-        // Show sample data if no resources in database
-        loadSampleResources();
+        showNotification('Error loading resources', 'error');
+        loadSampleResources(); // Fallback
+    } else {
+        allResources = data;
+        displayResources(allResources);
     }
 }
 

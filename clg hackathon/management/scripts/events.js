@@ -1,15 +1,4 @@
-import { db } from './firebase.js';
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    query,
-    where,
-    orderBy,
-    onSnapshot
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { supabaseClient } from './supabase-client.js';
 
 // Check authentication
 const userData = JSON.parse(localStorage.getItem('userData'));
@@ -34,42 +23,21 @@ let currentCategory = 'all';
 let currentEventId = null;
 let unsubscribeEvents = null;
 
-// Load events with real-time updates
-function loadEvents() {
-    const eventsRef = collection(db, 'events');
-    const q = query(eventsRef, orderBy('date'));
-    
-    // Real-time listener for events
-    unsubscribeEvents = onSnapshot(q, (snapshot) => {
-        allEvents = [];
-        
-        snapshot.forEach((doc) => {
-            allEvents.push({ id: doc.id, ...doc.data() });
-        });
-        
-        displayEvents(allEvents);
-        
-        // Show notification on updates
-        if (snapshot.docChanges().length > 0) {
-            const changes = snapshot.docChanges();
-            const added = changes.filter(c => c.type === 'added').length;
-            const modified = changes.filter(c => c.type === 'modified').length;
-            const removed = changes.filter(c => c.type === 'removed').length;
-            
-            if (added > 0) {
-                showNotification(`🎉 ${added} new event(s) added!`, 'success');
-            } else if (modified > 0) {
-                showNotification(`📝 ${modified} event(s) updated!`, 'info');
-            } else if (removed > 0) {
-                showNotification(`🗑️ ${removed} event(s) removed!`, 'warning');
-            }
-        }
-    }, (error) => {
+// Load events from Supabase
+async function loadEvents() {
+    const { data, error } = await supabaseClient
+        .from('events')
+        .select('*')
+        .order('start_datetime', { ascending: true });
+
+    if (error) {
         console.error('Error loading events:', error);
         showNotification('Error loading events', 'error');
-        // Show sample data if no events in database
-        loadSampleEvents();
-    });
+        loadSampleEvents(); // Fallback
+    } else {
+        allEvents = data.map(e => ({ ...e, date: e.date_text })); // Map date_text to date for compatibility
+        displayEvents(allEvents);
+    }
 }
 
 // Cleanup listener on page unload

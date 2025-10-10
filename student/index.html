@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Student Dashboard</h1>
+        </header>
+        <main>
+            <div class="tabs">
+                <button class="tab-link active" onclick="openTab(event, 'schedule')">Schedule</button>
+                <button class="tab-link" onclick="openTab(event, 'events')">Events</button>
+                <button class="tab-link" onclick="openTab(event, 'bus')">Bus</button>
+                <button class="tab-link" onclick="openTab(event, 'resources')">Resources</button>
+                <button class="tab-link" onclick="openTab(event, 'chatbot')">Chatbot</button>
+            </div>
+
+            <div id="schedule" class="tab-content active">
+                <h2>My Weekly Schedule</h2>
+                <div class="filter-container">
+                    <select id="student-year-select" onchange="loadSchedule()">
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                    </select>
+                    <select id="student-section-select" onchange="loadSchedule()">
+                        <!-- Sections will be populated by JS -->
+                    </select>
+                </div>
+                <div id="schedule-content"></div>
+            </div>
+
+            <div id="events" class="tab-content">
+                <h2>Upcoming Events</h2>
+                <div id="events-content" class="grid-container"></div>
+            </div>
+
+            <div id="bus" class="tab-content">
+                <h2>Bus Routes</h2>
+                <div id="bus-content"></div>
+            </div>
+
+            <div id="resources" class="tab-content">
+                <h2>Campus Resources</h2>
+                <div id="resources-content"></div>
+            </div>
+
+            <div id="chatbot" class="tab-content">
+                <h2>AI Assistant</h2>
+                <div class="chat-container">
+                    <div class="chat-box" id="chat-box"></div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input-field" placeholder="Type a message...">
+                        <button id="chat-send-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,16 +1,4 @@
-import { db } from './firebase.js';
-import {
-    collection,
-    addDoc,
-    getDocs,
-    updateDoc,
-    deleteDoc,
-    doc,
-    query,
-    where,
-    setDoc,
-    onSnapshot
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { supabaseClient } from './supabase-client.js';
 
 // Check admin authentication
 const userData = JSON.parse(localStorage.getItem('userData'));
@@ -74,7 +62,6 @@ window.updateSectionOptions = function() {
 
 // Logout
 window.logout = function() {
-    if (unsubscribeSchedules) unsubscribeSchedules();
     localStorage.clear();
     window.location.href = 'index.html';
 };
@@ -124,41 +111,34 @@ window.switchView = function(view) {
     }
 };
 
-// Load schedule data with real-time listener
-window.loadScheduleData = function() {
+// Load schedule data from Supabase
+window.loadScheduleData = async function() {
     const year = document.getElementById('year-select').value;
     const section = document.getElementById('section-select').value;
     
     currentYear = year;
     currentSection = section;
     
-    // Unsubscribe previous listener
-    if (unsubscribeSchedules) unsubscribeSchedules();
-    
-    // Setup real-time listener
-    const q = query(
-        collection(db, 'unified_schedules'),
-        where('year', '==', year),
-        where('section', '==', section)
-    );
-    
-    unsubscribeSchedules = onSnapshot(q, (snapshot) => {
-        scheduleData = [];
-        snapshot.forEach((doc) => {
-            scheduleData.push({ firestoreId: doc.id, ...doc.data() });
-        });
-        
-        if (currentView === 'week') {
-            renderWeeklySchedule();
-        } else {
-            renderMonthlyCalendar();
-        }
-        
-        showNotification(`📅 Schedule loaded: Year ${year} Section ${section}`, 'info');
-    }, (error) => {
+    const { data, error } = await supabaseClient
+        .from('unified_schedules')
+        .select('*')
+        .eq('year', year)
+        .eq('section', section);
+
+    if (error) {
         console.error('Error loading schedule:', error);
         showNotification('Error loading schedule', 'error');
-    });
+        scheduleData = [];
+    } else {
+        scheduleData = data;
+        showNotification(`📅 Schedule loaded: Year ${year} Section ${section}`, 'info');
+    }
+
+    if (currentView === 'week') {
+        renderWeeklySchedule();
+    } else {
+        renderMonthlyCalendar();
+    }
 };
 
 // Get week start (Monday)
@@ -361,7 +341,7 @@ window.closeClassModal = function() {
     selectedCells.clear();
 };
 
-// Save class block
+// Save class block to Supabase
 window.saveClassBlock = async function() {
     const subject = document.getElementById('class-subject').value.trim();
     const faculty = document.getElementById('class-faculty').value.trim();
@@ -370,13 +350,8 @@ window.saveClassBlock = async function() {
     const startDateStr = document.getElementById('class-start-date').value;
     const endDateStr = document.getElementById('class-end-date').value;
     
-    if (!subject) {
-        alert('Please enter subject name');
-        return;
-    }
-    
-    if (!startTime || !endTime) {
-        alert('Please select time range');
+    if (!subject || !startTime || !endTime) {
+        alert('Please fill all required fields.');
         return;
     }
     
@@ -386,71 +361,47 @@ window.saveClassBlock = async function() {
     saveBtn.textContent = '💾 Saving...';
     
     try {
-        // Determine date range
         let datesToApply = [];
-        
         if (startDateStr && endDateStr) {
-            // Date range mode: 9/10/2025 to 31/11/2025
-            const startDate = new Date(startDateStr);
+            const currentDate = new Date(startDateStr);
             const endDate = new Date(endDateStr);
-            
-            // Get all dates in range matching selected days
-            const currentDate = new Date(startDate);
             while (currentDate <= endDate) {
-                const dayOfWeek = (currentDate.getDay() + 6) % 7; // Convert to Monday=0
-                if (selection.dayIndices.includes(dayOfWeek) && dayOfWeek < 6) {
+                const dayOfWeek = (currentDate.getDay() + 6) % 7;
+                if (selection.dayIndices.includes(dayOfWeek)) {
                     datesToApply.push(new Date(currentDate));
                 }
                 currentDate.setDate(currentDate.getDate() + 1);
             }
         } else {
-            // Single week mode
-            selection.dayIndices.forEach(dayIndex => {
-                const date = new Date(currentWeekStart);
-                date.setDate(date.getDate() + dayIndex);
-                datesToApply.push(date);
-            });
+            datesToApply = selection.dates;
         }
-        
-        // Convert time to hours
-        const [startHour, startMin] = startTime.split(':').map(Number);
-        const [endHour, endMin] = endTime.split(':').map(Number);
-        const startDecimal = startHour + startMin / 60;
-        const endDecimal = endHour + endMin / 60;
-        
-        // Create classes for all dates
-        const savePromises = [];
-        datesToApply.forEach(date => {
-            const dateStr = formatDate(date);
+
+        const classesToInsert = datesToApply.map(date => {
             const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][(date.getDay() + 6) % 7];
-            
-            const classData = {
-                id: `${dateStr}-${startTime.replace(':', '')}-${Date.now()}-${Math.random()}`,
+            return {
                 year: currentYear,
                 section: currentSection,
-                date: dateStr,
+                date: formatDate(date),
                 day: dayName,
                 subject: subject,
                 faculty: faculty || 'TBA',
-                startTime: startTime,
-                endTime: endTime,
-                startHour: startDecimal,
-                endHour: endDecimal,
-                createdAt: new Date().toISOString()
+                start_time: startTime,
+                end_time: endTime,
+                start_hour: parseFloat(startTime.split(':')[0]),
+                end_hour: parseFloat(endTime.split(':')[0])
             };
-            
-            scheduleData.push(classData);
-            savePromises.push(addDoc(collection(db, 'unified_schedules'), classData));
         });
-        
-        await Promise.all(savePromises);
-        
+
+        const { error } = await supabaseClient.from('unified_schedules').insert(classesToInsert);
+
+        if (error) throw error;
+
         closeClassModal();
-        renderWeeklySchedule();
+        loadScheduleData();
         showNotification(`✅ Class created for ${datesToApply.length} day(s)!`, 'success');
     } catch (error) {
         console.error('Error saving class:', error);
-        showNotification('❌ Error saving class', 'error');
+        showNotification(`❌ Error saving class: ${error.message}`, 'error');
     } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = '💾 Save Class';
@@ -502,8 +453,8 @@ function renderWeeklySchedule() {
             
             if (classDate <= weekEnd && dayIndex < 6) {
                 // Calculate which cells this class spans
-                const startHour = classInfo.startHour || parseFloat(classInfo.startTime);
-                const endHour = classInfo.endHour || parseFloat(classInfo.endTime);
+                const startHour = parseFloat(classInfo.start_time.split(':')[0]);
+                const endHour = parseFloat(classInfo.end_time.split(':')[0]);
                 
                 // Find cells in time range
                 for (let hour = Math.floor(startHour); hour < Math.ceil(endHour); hour++) {

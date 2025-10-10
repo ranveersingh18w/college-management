@@ -1,0 +1,18 @@
+{
+  "name": "schedule-backend",
+  "version": "1.0.0",
+  "description": "Backend API for the Unified Schedule component",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
