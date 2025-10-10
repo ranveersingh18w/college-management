@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion</span>
+        </div>
+        <div class="nav-links">
+            <a href="home.html" class="active"><span>🏠</span> Home</a>
+            <a href="schedule.html"><span>📅</span> Schedule</a>
+            <a href="events.html"><span>🎉</span> Events</a>
+            <a href="resources.html"><span>📍</span> Resources</a>
+            <a href="bus.html"><span>🚌</span> Bus</a>
+        </div>
+        <div class="nav-user">
+            <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile">
+            <span id="user-name">Student</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-banner">
+            <h1>Welcome back, <span id="student-name">Student</span>! 👋</h1>
+            <p>Ready to make today productive?</p>
+            <span class="badge active">Active</span>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Classes Card -->
+            <div class="info-card">
+                <div class="card-icon">📚</div>
+                <div class="card-content">
+                    <span class="card-label">Today</span>
+                    <h2 id="classes-count">3 Classes</h2>
+                    <p id="classes-list">AI, Math, Digital Electronics</p>
+                </div>
+            </div>
+
+            <!-- Attendance Card -->
+            <div class="info-card">
+                <div class="card-icon">📈</div>
+                <div class="card-content">
+                    <span class="card-label good">Good</span>
+                    <h2 id="attendance-percent">85%</h2>
+                    <p>Overall Attendance</p>
+                </div>
+            </div>
+
+            <!-- Next Class Card -->
+            <div class="info-card">
+                <div class="card-icon">🕒</div>
+                <div class="card-content">
+                    <span class="card-label next">Next</span>
+                    <h2 id="next-class-time">2:30 PM</h2>
+                    <p id="next-class-details">AI Lab - Room 305</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-sections">
+            <!-- Today's Schedule -->
+            <div class="section">
+                <div class="section-header">
+                    <h3>Today's Schedule</h3>
+                    <a href="schedule.html" class="view-all">View All</a>
+                </div>
+                <div id="today-schedule" class="schedule-list">
+                    <!-- Schedule items will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section">
+                <h3>Quick Actions</h3>
+                <div class="quick-actions">
+                    <button onclick="openChatbot()" class="action-btn">
+                        <span>💬</span>
+                        <span>Ask AI Assistant</span>
+                    </button>
+                    <button onclick="window.location.href='events.html'" class="action-btn">
+                        <span>🎊</span>
+                        <span>Browse Events</span>
+                    </button>
+                    <button onclick="window.location.href='bus.html'" class="action-btn">
+                        <span>🚍</span>
+                        <span>Book Bus Seat</span>
+                    </button>
+                    <button onclick="window.location.href='resources.html'" class="action-btn">
+                        <span>🔍</span>
+                        <span>Set Reminder</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reminders/Notifications -->
+            <div class="section">
+                <h3>🔔 Upcoming Reminders</h3>
+                <div id="reminders-list" class="reminders">
+                    <!-- Reminders will be loaded here -->
+                </div>
+            </div>
+
+            <!-- AI Tip of the Day -->
+            <div class="section ai-tip">
+                <h3>💡 AI Tip of the Day</h3>
+                <div id="ai-tip" class="tip-content">
+                    <p>Loading motivational tip...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="modal">
+        <div class="modal-content chatbot-container">
+            <div class="chatbot-header">
+                <h3>🤖 AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="bot-message">
+                    <p>Hi! I'm your campus assistant. How can I help you today?</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Ask me anything...">
+                <button onclick="sendMessage()" class="btn-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button class="floating-chat-btn" onclick="openChatbot()">
+        💬
+    </button>
+
+    <script type="module" src="scripts/home.js"></script>
+</body>
+</html>

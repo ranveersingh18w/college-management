@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Companion - Login</title>
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <img src="assets/images/logo.svg" alt="Campus Companion">
+                <h1>Campus Companion</h1>
+                <p>Your smart campus assistant</p>
+            </div>
+            
+            <div id="login-form" class="form-container">
+                <h2>Welcome Back!</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="text" id="login-rollnumber" placeholder="Roll Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                <p class="switch-auth">Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+            </div>
+
+            <div id="signup-form" class="form-container" style="display: none;">
+                <h2>Create Account</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <input type="text" id="signup-name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="signup-rollnumber" placeholder="Roll Number" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="signup-year" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="signup-branch" required>
+                            <option value="">Select Branch</option>
+                            <option value="AI">Artificial Intelligence</option>
+                            <option value="CSE">Computer Science Engineering</option>
+                            <option value="ECE">Electronics & Communication</option>
+                            <option value="CIVIL">Civil Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signup-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group photo-upload">
+                        <label for="signup-photo" class="photo-label">
+                            <img id="photo-preview" src="assets/images/avatar-placeholder.svg" alt="Profile">
+                            <span>Upload Photo</span>
+                        </label>
+                        <input type="file" id="signup-photo" accept="image/*" style="display: none;">
+                    </div>
+                    <button type="submit" class="btn-primary">Sign Up</button>
+                </form>
+                <p class="switch-auth">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script type="module" src="scripts/auth.js"></script>
+</body>
+</html>

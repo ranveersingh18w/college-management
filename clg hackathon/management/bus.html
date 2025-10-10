@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Reservation - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion</span>
+        </div>
+        <div class="nav-links">
+            <a href="home.html"><span>🏠</span> Home</a>
+            <a href="schedule.html"><span>📅</span> Schedule</a>
+            <a href="events.html"><span>🎉</span> Events</a>
+            <a href="resources.html"><span>📍</span> Resources</a>
+            <a href="bus.html" class="active"><span>🚌</span> Bus</a>
+        </div>
+        <div class="nav-user">
+            <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile">
+            <span id="user-name">Student</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🚌 Bus Seat Reservation</h1>
+            <p>Check availability and reserve your bus seat</p>
+        </div>
+
+        <div class="bus-tabs">
+            <button class="bus-tab active" data-time="morning">Morning Buses</button>
+            <button class="bus-tab" data-time="evening">Evening Buses</button>
+        </div>
+
+        <div id="bus-routes-container" class="bus-routes">
+            <!-- Bus routes will be loaded here -->
+        </div>
+
+        <div class="pickup-points">
+            <h3>📍 Pickup Points</h3>
+            <ul>
+                <li>🚏 City Center Station - Main Gate</li>
+                <li>🚏 Campus - Academic Block Entrance</li>
+                <li>⏰ Please arrive 10 minutes before departure</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎫 Booking Confirmation</h3>
+                <button onclick="closeBookingModal()" class="close-btn">&times;</button>
+            </div>
+            <div class="booking-details">
+                <div class="success-icon">✅</div>
+                <h2>Seat Booked Successfully!</h2>
+                <div class="booking-info">
+                    <p><strong>Route:</strong> <span id="booking-route"></span></p>
+                    <p><strong>Departure:</strong> <span id="booking-time"></span></p>
+                    <p><strong>Seat Number:</strong> <span id="booking-seat"></span></p>
+                    <p><strong>Booking ID:</strong> <span id="booking-id"></span></p>
+                </div>
+                <button onclick="closeBookingModal()" class="btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button class="floating-chat-btn" onclick="openChatbot()">
+        💬
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="modal">
+        <div class="modal-content chatbot-container">
+            <div class="chatbot-header">
+                <h3>🤖 AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="bot-message">
+                    <p>Hi! Ask me about bus bookings, like "Book me a seat on 8:30 AM bus" or "Show available seats for evening bus"</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Ask about bus bookings...">
+                <button onclick="sendMessage()" class="btn-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="scripts/bus.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion</span>
+        </div>
+        <div class="nav-links">
+            <a href="home.html"><span>🏠</span> Home</a>
+            <a href="schedule.html"><span>📅</span> Schedule</a>
+            <a href="events.html" class="active"><span>🎉</span> Events</a>
+            <a href="resources.html"><span>📍</span> Resources</a>
+            <a href="bus.html"><span>🚌</span> Bus</a>
+        </div>
+        <div class="nav-user">
+            <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile">
+            <span id="user-name">Student</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🎉 Campus Events</h1>
+            <p>Discover and register for upcoming events</p>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-category="all">All Events</button>
+            <button class="filter-tab" data-category="technical">Technical</button>
+            <button class="filter-tab" data-category="cultural">Cultural</button>
+            <button class="filter-tab" data-category="sports">Sports</button>
+        </div>
+
+        <div id="events-container" class="events-grid">
+            <!-- Events will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content event-details">
+            <button onclick="closeEventModal()" class="close-btn">&times;</button>
+            <img id="event-modal-image" src="" alt="Event">
+            <div class="event-modal-content">
+                <span id="event-modal-category" class="event-category"></span>
+                <h2 id="event-modal-title"></h2>
+                <p id="event-modal-description"></p>
+                <div class="event-modal-info">
+                    <div class="info-item">
+                        <span>📅</span>
+                        <span id="event-modal-date"></span>
+                    </div>
+                    <div class="info-item">
+                        <span>📍</span>
+                        <span id="event-modal-location"></span>
+                    </div>
+                    <div class="info-item">
+                        <span>👥</span>
+                        <span id="event-modal-attendees"></span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="register-btn" onclick="registerForEvent()" class="btn-primary">Register Now</button>
+                    <button id="add-to-schedule-btn" onclick="addEventToSchedule()" class="btn-secondary">Add to Schedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button class="floating-chat-btn" onclick="openChatbot()">
+        💬
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="modal">
+        <div class="modal-content chatbot-container">
+            <div class="chatbot-header">
+                <h3>🤖 AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="bot-message">
+                    <p>Hi! Ask me about campus events, like "What events are today?" or "Tell me about TechFest"</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Ask about events...">
+                <button onclick="sendMessage()" class="btn-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="scripts/events.js"></script>
+</body>
+</html>

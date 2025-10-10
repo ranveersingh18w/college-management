@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion</span>
+        </div>
+        <div class="nav-links">
+            <a href="home.html"><span>🏠</span> Home</a>
+            <a href="schedule.html" class="active"><span>📅</span> Schedule</a>
+            <a href="events.html"><span>🎉</span> Events</a>
+            <a href="resources.html"><span>📍</span> Resources</a>
+            <a href="bus.html"><span>🚌</span> Bus</a>
+        </div>
+        <div class="nav-user">
+            <img id="user-avatar" src="assets/images/avatar-placeholder.svg" alt="Profile">
+            <span id="user-name">Student</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <h1>📅 Class Schedule</h1>
+                <p>View your weekly timetable (managed by administration)</p>
+            </div>
+        </div>
+
+        <div id="schedule-container" class="schedule-container">
+            <!-- Schedule items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Class Modal -->
+    <div id="class-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Class</h3>
+                <button onclick="closeClassModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="class-form">
+                <input type="hidden" id="class-id">
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" id="class-subject" placeholder="e.g., Artificial Intelligence" required>
+                </div>
+                <div class="form-group">
+                    <label>Faculty Name</label>
+                    <input type="text" id="class-faculty" placeholder="e.g., Dr. Smith" required>
+                </div>
+                <div class="form-group">
+                    <label>Day</label>
+                    <select id="class-day" required>
+                        <option value="">Select Day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" id="class-start-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" id="class-end-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="class-location" placeholder="e.g., Lab 301" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeClassModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button class="floating-chat-btn" onclick="openChatbot()">
+        💬
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="modal">
+        <div class="modal-content chatbot-container">
+            <div class="chatbot-header">
+                <h3>🤖 AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-btn">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="bot-message">
+                    <p>Hi! Ask me about your schedule, like "When is my next class?" or "Show today's timetable"</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Ask about your schedule...">
+                <button onclick="sendMessage()" class="btn-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="scripts/schedule.js"></script>
+</body>
+</html>

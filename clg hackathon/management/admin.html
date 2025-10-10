@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Campus Companion</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Campus Companion - Admin</span>
+        </div>
+        <div class="nav-links">
+            <a href="admin.html" class="active"><span>🏠</span> Dashboard</a>
+            <a href="unified-schedule.html"><span>📅</span> Schedule Manager</a>
+            <a href="#" onclick="showSection('events')"><span>🎉</span> Events</a>
+            <a href="#" onclick="showSection('buses')"><span>🚌</span> Buses</a>
+            <a href="#" onclick="showSection('map')"><span>🗺️</span> Map</a>
+            <a href="#" onclick="showSection('users')"><span>👥</span> Users</a>
+        </div>
+        <div class="nav-user">
+            <img src="assets/images/avatar-placeholder.svg" alt="Admin">
+            <span>Administrator</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="admin-section active">
+            <h1>🎛️ Admin Dashboard</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3 id="total-users">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <h3 id="total-schedules">0</h3>
+                        <p>Active Schedules</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎉</div>
+                    <div class="stat-content">
+                        <h3 id="total-events">0</h3>
+                        <p>Upcoming Events</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚌</div>
+                    <div class="stat-content">
+                        <h3 id="total-buses">5</h3>
+                        <p>Active Bus Routes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions-admin">
+                <button onclick="window.location.href='unified-schedule.html'" class="admin-action-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <span>📅</span>
+                    <span>Schedule Manager</span>
+                </button>
+                <button onclick="showSection('events')" class="admin-action-btn">
+                    <span>🎉</span>
+                    <span>Manage Events</span>
+                </button>
+                <button onclick="showSection('buses')" class="admin-action-btn">
+                    <span>🚌</span>
+                    <span>Manage Buses</span>
+                </button>
+                <button onclick="showSection('map')" class="admin-action-btn">
+                    <span>🗺️</span>
+                    <span>Campus Map</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Schedules Section -->
+        <div id="schedules-section" class="admin-section">
+            <div class="section-header">
+                <h1>📅 Manage Schedules</h1>
+                <button onclick="openScheduleModal()" class="btn-primary">+ Add Schedule</button>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-branch="all" onclick="filterSchedules('all')">All</button>
+                <button class="filter-tab" data-branch="AI" onclick="filterSchedules('AI')">AI</button>
+                <button class="filter-tab" data-branch="CSE" onclick="filterSchedules('CSE')">CSE</button>
+                <button class="filter-tab" data-branch="ECE" onclick="filterSchedules('ECE')">ECE</button>
+                <button class="filter-tab" data-branch="CIVIL" onclick="filterSchedules('CIVIL')">Civil</button>
+            </div>
+            
+            <div id="admin-schedules-container" class="admin-content-grid">
+                <!-- Schedules will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events-section" class="admin-section">
+            <div class="section-header">
+                <h1>🎉 Manage Events</h1>
+                <button onclick="openEventModal()" class="btn-primary">+ Add Event</button>
+            </div>
+            
+            <div id="admin-events-container" class="admin-content-grid">
+                <!-- Events will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Buses Section -->
+        <div id="buses-section" class="admin-section">
+            <div class="section-header">
+                <h1>🚌 Manage Bus Routes</h1>
+                <button onclick="openBusModal()" class="btn-primary">+ Add Bus Route</button>
+            </div>
+            
+            <div id="admin-buses-container" class="admin-content-grid">
+                <!-- Buses will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div id="map-section" class="admin-section">
+            <div class="section-header">
+                <h1>🗺️ Campus Map</h1>
+                <button onclick="openMapModal()" class="btn-primary">+ Add Location</button>
+            </div>
+            
+            <div class="map-container">
+                <div id="campus-map" class="campus-map-view">
+                    <div class="map-placeholder">
+                        <h3>Campus Map</h3>
+                        <p>Interactive campus map will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="admin-map-locations" class="admin-content-grid">
+                <!-- Map locations will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div id="users-section" class="admin-section">
+            <h1>👥 Registered Users</h1>
+            
+            <div id="admin-users-container" class="users-table">
+                <!-- Users will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="schedule-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="schedule-modal-title">Add Schedule</h3>
+                <button onclick="closeScheduleModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="schedule-form">
+                <input type="hidden" id="schedule-id">
+                <div class="form-group">
+                    <label>Branch</label>
+                    <select id="schedule-branch" required>
+                        <option value="">Select Branch</option>
+                        <option value="AI">Artificial Intelligence</option>
+                        <option value="CSE">Computer Science Engineering</option>
+                        <option value="ECE">Electronics & Communication</option>
+                        <option value="CIVIL">Civil Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <select id="schedule-year" required>
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" id="schedule-subject" placeholder="e.g., Machine Learning" required>
+                </div>
+                <div class="form-group">
+                    <label>Faculty Name</label>
+                    <input type="text" id="schedule-faculty" placeholder="e.g., Dr. Smith" required>
+                </div>
+                <div class="form-group">
+                    <label>Day</label>
+                    <select id="schedule-day" required>
+                        <option value="">Select Day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" id="schedule-start-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" id="schedule-end-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="schedule-location" placeholder="e.g., Lab 301" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeScheduleModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="event-modal-title">Add Event</h3>
+                <button onclick="closeEventModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="event-form">
+                <input type="hidden" id="event-id">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" id="event-title" placeholder="e.g., TechFest 2025" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="event-description" rows="3" placeholder="Event description..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="event-category" required>
+                        <option value="">Select Category</option>
+                        <option value="technical">Technical</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="event-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" id="event-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="event-location" placeholder="e.g., Main Auditorium" required>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="event-image" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeEventModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bus Modal -->
+    <div id="bus-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="bus-modal-title">Add Bus Route</h3>
+                <button onclick="closeBusModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="bus-form">
+                <input type="hidden" id="bus-id">
+                <div class="form-group">
+                    <label>Bus Number</label>
+                    <select id="bus-number" required>
+                        <option value="">Select Bus</option>
+                        <option value="8">Bus No. 8</option>
+                        <option value="10">Bus No. 10</option>
+                        <option value="11">Bus No. 11</option>
+                        <option value="12">Bus No. 12</option>
+                        <option value="13">Bus No. 13</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Route Name</label>
+                    <input type="text" id="bus-route-name" placeholder="e.g., City Center - Campus" required>
+                </div>
+                <div class="form-group">
+                    <label>Time of Day</label>
+                    <select id="bus-time-of-day" required>
+                        <option value="">Select Time</option>
+                        <option value="morning">Morning</option>
+                        <option value="evening">Evening</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Departure Time</label>
+                    <input type="time" id="bus-departure-time" required>
+                </div>
+                <div class="form-group">
+                    <label>Total Seats</label>
+                    <input type="number" id="bus-total-seats" placeholder="40" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Stops (comma-separated)</label>
+                    <textarea id="bus-stops" rows="3" placeholder="Main Gate, Metro Station, City Center" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeBusModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Bus Route</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Map Location Modal -->
+    <div id="map-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Campus Location</h3>
+                <button onclick="closeMapModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="map-form">
+                <div class="form-group">
+                    <label>Location Name</label>
+                    <input type="text" id="map-location-name" placeholder="e.g., Central Library" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="map-location-type" required>
+                        <option value="">Select Type</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Library">Library</option>
+                        <option value="Lab">Lab</option>
+                        <option value="Dining">Dining</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Facility">Facility</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="map-location-description" rows="2" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Building/Block</label>
+                        <input type="text" id="map-location-building" placeholder="Block A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Floor</label>
+                        <input type="text" id="map-location-floor" placeholder="Ground Floor" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Timings</label>
+                    <input type="text" id="map-location-timings" placeholder="9:00 AM - 6:00 PM" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact</label>
+                    <input type="text" id="map-location-contact" placeholder="+1 234-567-8900">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeMapModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Location</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="scripts/admin.js"></script>
+</body>
+</html>

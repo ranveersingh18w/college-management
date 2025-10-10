@@ -1,0 +1,21 @@
+{
+  "name": "smart-campus-companion",
+  "version": "1.0.0",
+  "description": "Your all-in-one campus management solution",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "deploy": "firebase deploy"
+  },
+  "keywords": [
+    "campus",
+    "student",
+    "management",
+    "education"
+  ],
+  "author": "College Hackathon Team",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase-tools": "^12.0.0"
+  }
+}

@@ -1,0 +1,604 @@
+/* Visual Schedule Builder Styles */
+
+.schedule-builder-container {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Controls Section */
+.schedule-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.control-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.control-group select {
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-group select:hover {
+    border-color: #667eea;
+}
+
+.control-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* View Tabs */
+.view-tabs {
+    flex-direction: row;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.view-tab {
+    padding: 10px 20px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.view-tab:hover {
+    border-color: #667eea;
+    background: #f5f7ff;
+}
+
+.view-tab.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.btn-save {
+    padding: 10px 25px;
+    background: #48bb78;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-save:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+}
+
+/* Date Navigation */
+.date-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.date-navigation h2 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 20px;
+}
+
+.btn-nav {
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-nav:hover {
+    background: #5568d3;
+    transform: scale(1.05);
+}
+
+/* Schedule Views */
+.schedule-view {
+    display: none;
+}
+
+.schedule-view.active {
+    display: block;
+}
+
+/* Daily View - Time Grid */
+.time-grid-container {
+    display: flex;
+    gap: 10px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+}
+
+.time-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 10px;
+}
+
+.time-label {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #718096;
+    padding-right: 10px;
+}
+
+.time-grid {
+    flex: 1;
+    position: relative;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, 
+        transparent 59px, 
+        #e2e8f0 59px, 
+        #e2e8f0 60px, 
+        transparent 60px);
+    background-size: 100% 60px;
+    cursor: crosshair;
+}
+
+.time-block {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 6px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    overflow: hidden;
+}
+
+.time-block:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+}
+
+.time-block-subject {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.time-block-faculty {
+    font-size: 11px;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.time-block-time {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.time-block-location {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.time-block.selecting {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+}
+
+/* Weekly View */
+.weekly-grid {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.week-header {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.time-column-header,
+.day-header {
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    background: #f7fafc;
+    border-radius: 8px;
+    color: #2d3748;
+}
+
+.week-grid-body {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 10px;
+}
+
+.week-time-label {
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week-day-column {
+    position: relative;
+    min-height: 60px;
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.week-day-column:hover {
+    border-color: #667eea;
+    background: #f5f7ff;
+}
+
+.week-day-column.has-class {
+    border: 2px solid #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Monthly View */
+.monthly-calendar {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.month-day-header {
+    padding: 10px;
+    text-align: center;
+    font-weight: 700;
+    color: #2d3748;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.month-day {
+    min-height: 100px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.month-day:hover {
+    border-color: #667eea;
+    background: #f5f7ff;
+}
+
+.month-day.today {
+    border-color: #667eea;
+    background: #f5f7ff;
+}
+
+.month-day.other-month {
+    opacity: 0.3;
+}
+
+.month-day-number {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #2d3748;
+}
+
+.month-day-classes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.month-class-dot {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    font-size: 10px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Schedule Summary */
+.schedule-summary {
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-summary h3 {
+    margin-top: 0;
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+
+.classes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.class-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.class-item-time {
+    font-weight: 700;
+    color: #667eea;
+    min-width: 120px;
+}
+
+.class-item-details {
+    flex: 1;
+}
+
+.class-item-subject {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+}
+
+.class-item-faculty {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #2d3748;
+}
+
+.close-btn {
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #718096;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: #f7fafc;
+    color: #2d3748;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.time-display {
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.time-display strong {
+    color: #2d3748;
+}
+
+.time-display span {
+    color: #667eea;
+    font-weight: 700;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #2d3748;
+}
+
+.btn-secondary:hover {
+    background: #cbd5e0;
+}
+
+.btn-danger {
+    background: #f56565;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #e53e3e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .schedule-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .view-tabs {
+        margin-left: 0;
+    }
+    
+    .week-header,
+    .week-grid-body {
+        grid-template-columns: 60px repeat(5, 1fr);
+    }
+    
+    .month-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
+    
+    .month-day {
+        min-height: 60px;
+        padding: 5px;
+    }
+}

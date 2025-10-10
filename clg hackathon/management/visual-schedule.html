@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Schedule Builder - Admin</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/visual-schedule.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="assets/images/logo.svg" alt="Logo">
+            <span>Visual Schedule Builder</span>
+        </div>
+        <div class="nav-links">
+            <a href="admin.html"><span>🏠</span> Dashboard</a>
+            <a href="visual-schedule.html" class="active"><span>📅</span> Visual Schedule</a>
+        </div>
+        <div class="nav-user">
+            <img src="assets/images/avatar-placeholder.svg" alt="Admin">
+            <span>Administrator</span>
+            <button onclick="logout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container schedule-builder-container">
+        <!-- Controls Section -->
+        <div class="schedule-controls">
+            <div class="control-group">
+                <label>Branch:</label>
+                <select id="branch-select" onchange="loadScheduleData()">
+                    <option value="AI">AI</option>
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="CIVIL">CIVIL</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Year:</label>
+                <select id="year-select" onchange="loadScheduleData()">
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+            </div>
+            
+            <div class="control-group view-tabs">
+                <button class="view-tab active" onclick="switchView('daily')" data-view="daily">📅 Today</button>
+                <button class="view-tab" onclick="switchView('weekly')" data-view="weekly">📆 Weekly</button>
+                <button class="view-tab" onclick="switchView('monthly')" data-view="monthly">🗓️ Monthly</button>
+            </div>
+            
+            <div class="control-group">
+                <button onclick="saveAllSchedules()" class="btn-save">💾 Save All</button>
+            </div>
+        </div>
+
+        <!-- Date Navigation -->
+        <div class="date-navigation">
+            <button onclick="navigateDate(-1)" class="btn-nav">← Previous</button>
+            <h2 id="current-date-display">Today</h2>
+            <button onclick="navigateDate(1)" class="btn-nav">Next →</button>
+        </div>
+
+        <!-- Daily View -->
+        <div id="daily-view" class="schedule-view active">
+            <div class="time-grid-container">
+                <div class="time-labels">
+                    <div class="time-label">9:00 AM</div>
+                    <div class="time-label">10:00 AM</div>
+                    <div class="time-label">11:00 AM</div>
+                    <div class="time-label">12:00 PM</div>
+                    <div class="time-label">1:00 PM</div>
+                    <div class="time-label">2:00 PM</div>
+                    <div class="time-label">3:00 PM</div>
+                    <div class="time-label">4:00 PM</div>
+                </div>
+                <div class="time-grid" id="daily-time-grid">
+                    <!-- Time blocks will be generated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly View -->
+        <div id="weekly-view" class="schedule-view">
+            <div class="weekly-grid">
+                <div class="week-header">
+                    <div class="time-column-header">Time</div>
+                    <div class="day-header">Monday</div>
+                    <div class="day-header">Tuesday</div>
+                    <div class="day-header">Wednesday</div>
+                    <div class="day-header">Thursday</div>
+                    <div class="day-header">Friday</div>
+                </div>
+                <div class="week-grid-body" id="weekly-grid-body">
+                    <!-- Weekly grid will be generated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly View -->
+        <div id="monthly-view" class="schedule-view">
+            <div class="monthly-calendar" id="monthly-calendar">
+                <!-- Monthly calendar will be generated here -->
+            </div>
+        </div>
+
+        <!-- Class Info Display -->
+        <div class="schedule-summary">
+            <h3>Today's Classes</h3>
+            <div id="classes-list" class="classes-list">
+                <!-- Classes will be listed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Creation Modal -->
+    <div id="class-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Class</h2>
+                <button onclick="closeClassModal()" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Subject Name *</label>
+                    <input type="text" id="class-subject" placeholder="e.g., Data Structures">
+                </div>
+                <div class="form-group">
+                    <label>Faculty Name</label>
+                    <input type="text" id="class-faculty" placeholder="e.g., Dr. Smith">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="class-location" placeholder="e.g., Room 301">
+                </div>
+                <div class="time-display">
+                    <strong>Time:</strong> <span id="selected-time-display"></span>
+                </div>
+                <div class="modal-actions">
+                    <button onclick="saveClassBlock()" class="btn-primary">Save Class</button>
+                    <button onclick="closeClassModal()" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Class Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Class</h2>
+                <button onclick="closeEditModal()" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Subject Name *</label>
+                    <input type="text" id="edit-subject">
+                </div>
+                <div class="form-group">
+                    <label>Faculty Name</label>
+                    <input type="text" id="edit-faculty">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="edit-location">
+                </div>
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" id="edit-start-time">
+                </div>
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" id="edit-end-time">
+                </div>
+                <div class="modal-actions">
+                    <button onclick="updateClassBlock()" class="btn-primary">Update</button>
+                    <button onclick="deleteClassBlock()" class="btn-danger">Delete</button>
+                    <button onclick="closeEditModal()" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="scripts/visual-schedule.js"></script>
+</body>
+</html>
